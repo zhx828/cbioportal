@@ -469,6 +469,15 @@
         <servlet-name>cancer_study_view</servlet-name>
         <url-pattern>/study.do</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>dashboard</servlet-name>
+        <servlet-class>org.mskcc.cbio.portal.servlet.Dashboard</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dashboard</servlet-name>
+        <url-pattern>/dashboard</url-pattern>
+    </servlet-mapping>
     
     <servlet>
         <servlet-name>DrugsJSON</servlet-name>
