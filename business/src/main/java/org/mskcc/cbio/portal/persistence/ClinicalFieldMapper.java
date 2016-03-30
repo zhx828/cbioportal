@@ -18,9 +18,11 @@ public interface ClinicalFieldMapper {
 	List<DBClinicalField> getSampleClinicalFieldsByStudy(@Param("study_id") String study_id);
 	List<DBClinicalField> getPatientClinicalFieldsByStudy(@Param("study_id") String study_id);
 	
-	List<DBClinicalField> getSampleClinicalFieldsBySample(@Param("study_id") String study_id, @Param("sample_ids") List<String> sample_ids);
+    List<DBClinicalField> getSampleClinicalFieldsBySample(@Param("study_id") String study_id, @Param("sample_ids") List<String> sample_ids);
+    List<DBClinicalField> getSampleClinicalFieldsBySampleInternalIds(@Param("study_id") String study_id, @Param("sample_ids") List<Integer> sample_ids);
 	List<DBClinicalField> getPatientClinicalFieldsByPatient(@Param("study_id") String study_id, @Param("patient_ids") List<String> patient_ids);
-	
-	List<DBClinicalField> getAllSampleClinicalFields();
+    List<DBClinicalField> getPatientClinicalFieldsByPatientInternalIds(@Param("study_id") String study_id, @Param("patient_ids") List<Integer> patient_ids);
+
+    List<DBClinicalField> getAllSampleClinicalFields();
 	List<DBClinicalField> getAllPatientClinicalFields();
 }

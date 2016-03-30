@@ -106,6 +106,11 @@ public class ApiService {
 	public List<DBClinicalField> getSampleClinicalAttributes(String study_id, List<String> sample_ids) {
 		return clinicalFieldMapper.getSampleClinicalFieldsBySample(study_id, sample_ids);
 	}
+    
+    @Transactional
+    public List<DBClinicalField> getSampleClinicalAttributesByInternalIds(String study_id, List<Integer> sample_ids) {
+        return clinicalFieldMapper.getSampleClinicalFieldsBySampleInternalIds(study_id, sample_ids);
+    }
 
 	@Transactional
 	public List<DBClinicalField> getPatientClinicalAttributes() {
@@ -121,6 +126,11 @@ public class ApiService {
 	public List<DBClinicalField> getPatientClinicalAttributes(String study_id, List<String> patient_ids) {
 		return clinicalFieldMapper.getPatientClinicalFieldsByPatient(study_id, patient_ids);
 	}
+
+    @Transactional
+    public List<DBClinicalField> getPatientClinicalAttributesByInternalIds(String study_id, List<Integer> patient_ids) {
+        return clinicalFieldMapper.getPatientClinicalFieldsByPatientInternalIds(study_id, patient_ids);
+    }
 
 	@Transactional
 	public List<DBGene> getGenes() {
@@ -179,6 +189,11 @@ public class ApiService {
 		return patientMapper.getPatientsByStudy(study_id);
 	}
 
+    @Transactional
+    public List<Integer> getPatientInternalIdsByStudy(String study_id) {
+        return patientMapper.getPatientInternalIdsByStudy(study_id);
+    }
+    
 	@Transactional
 	public List<DBPatient> getPatientsByPatient(String study_id, List<String> patient_ids) {
 		return patientMapper.getPatientsByPatient(study_id, patient_ids);
@@ -295,6 +310,11 @@ public class ApiService {
 	public List<DBSample> getSamples(String study_id) {
 		return sampleMapper.getSamplesByStudy(study_id);
 	}
+    
+    @Transactional
+    public List<Integer> getSampleInternalIds(String study_id) {
+        return sampleMapper.getSampleInternalIdsByStudy(study_id);
+    }
 
 	@Transactional
 	public List<DBSample> getSamplesBySample(String study_id, List<String> sample_ids) {
