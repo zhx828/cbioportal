@@ -3,6 +3,7 @@ package org.mskcc.cbio.portal.persistence;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.plugin.Interceptor;
 import org.mskcc.cbio.portal.model.DBSample;
 
 /*
@@ -17,6 +18,7 @@ import org.mskcc.cbio.portal.model.DBSample;
 public interface SampleMapper {
 	List<DBSample> getSamplesBySample(@Param("study_id") String study_id, @Param("sample_ids") List<String> sample_ids);
 	List<DBSample> getSamplesByStudy(@Param("study_id") String study_id);
+    List<Integer> getSampleInternalIdsByStudy(@Param("study_id") String study_id);
 	List<DBSample> getSamplesByInternalId(@Param("sample_ids") List<String> sample_ids);
-        List<DBSample> getSamplesByPatient(@Param("study_id") String study_id, @Param("patient_ids") List<String> patient_ids);
+    List<DBSample> getSamplesByPatient(@Param("study_id") String study_id, @Param("patient_ids") List<String> patient_ids);
 }
