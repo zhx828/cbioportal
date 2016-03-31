@@ -3196,6 +3196,16 @@
 				this.trigger('changed', { 'action' : 'deselect_all', 'selected' : this._data.core.selected, 'old_selection' : tmp });
 			}
 		},
+        /**
+         * Jump to dashboard page with selected nodes
+         * @name dashboard([supress_event])
+         */
+        dashboard: function() {
+            var tmp = this._data.core.selected.join(',');
+            var path = window.location.href.replace('index.do', '');
+            path += 'dashboard?study_id=' + tmp;
+            window.open(path);
+        },
 		/**
 		 * checks if a node is selected
 		 * @name is_selected(obj)

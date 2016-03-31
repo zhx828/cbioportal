@@ -60,6 +60,7 @@
         <div class="step_header_search_result">
             <span id="jstree_selected_study_count">No studies selected.</span>
             <span><a href='javascript:void(0)' id='jstree_deselect_all_btn' onclick='$("#jstree").jstree(true).deselect_all();'>Deselect all</a></span>
+            <button class="btn btn-default btn-sm" onclick='$("#jstree").jstree(true).dashboard();'>Dashboard</button>
         </div>
         
         
