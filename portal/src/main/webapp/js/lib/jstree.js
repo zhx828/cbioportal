@@ -2924,7 +2924,7 @@
 				}
 				var linkoutName = 'Summary';
 				if(node.li_attr.isVirtual){
-					linkoutName = 'Summary-iViz'
+					linkoutName = 'Dashboard'
 				}
                 var $linkOutIcon = $('<i class="btn btn-default btn-sm jstree-node-decorator" style="cursor:pointer;  padding: 0px 5px; font-weight: normal;font-style: normal;margin-left: 10px; color:white; background-color:#2986e2">'+linkoutName+'</i>');
 				obj.append($linkOutIcon);
@@ -3201,9 +3201,22 @@
          * @name dashboard([supress_event])
          */
         dashboard: function() {
-            var tmp = this._data.core.selected.join(',');
-            var path = window.location.href.replace('index.do', '');
-            path += 'dashboard?study_id=' + tmp;
+            var vcs = iViz.session.utils.getVirtualCohorts().map(function(item) {
+                return item.virtualCohortID;
+            });
+            var selected = $("#select_multiple_studies").val().split(',').map(function(i) {
+                return i.trim();
+            });
+            //var tmp = this._data.core.selected.join(',');
+            var studies = _.difference(selected, vcs);
+            var selectVcs = _.difference(selected, studies);
+            var path = window.location.href.replace('index.do', '') + 'dashboard?';
+            if(studies.length > 0) {
+                path += 'study_id=' + studies.join(',') + '&';
+            }
+            if(selectVcs.length > 0) {
+                path += 'vc_id=' + selectVcs.join(',');
+            }
             window.open(path);
         },
 		/**
