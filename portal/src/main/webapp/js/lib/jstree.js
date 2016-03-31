@@ -2922,8 +2922,11 @@
 						hide: {delay: 0, fixed: true}
 					});
 				}
-                                
-                                var $linkOutIcon = $('<i class="btn btn-default btn-sm jstree-node-decorator" style="cursor:pointer;  padding: 0px 5px; font-weight: normal;font-style: normal;margin-left: 10px; color:white; background-color:#2986e2">Summary</i>');
+				var linkoutName = 'Summary';
+				if(node.li_attr.isVirtual){
+					linkoutName = 'Summary-iViz'
+				}
+                var $linkOutIcon = $('<i class="btn btn-default btn-sm jstree-node-decorator" style="cursor:pointer;  padding: 0px 5px; font-weight: normal;font-style: normal;margin-left: 10px; color:white; background-color:#2986e2">'+linkoutName+'</i>');
 				obj.append($linkOutIcon);
 				$linkOutIcon.mouseenter(function() {
 					$linkOutIcon.fadeTo('fast', 0.7);
@@ -2936,7 +2939,11 @@
 				});
 				$linkOutIcon.click(function(e) {
 					e.preventDefault();
-					window.open('study.do?cancer_study_id='+node.id);
+					if(node.li_attr.isVirtual){
+						window.open('dashboard?vc_id='+node.id);
+					}else{
+						window.open('study.do?cancer_study_id='+node.id);
+					}
 				});
 			} else {
 				if (this.node_has_descendant_branches(node.id)) {
