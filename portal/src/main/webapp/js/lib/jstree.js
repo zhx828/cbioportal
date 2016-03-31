@@ -3211,11 +3211,16 @@
             var studies = _.difference(selected, vcs);
             var selectVcs = _.difference(selected, studies);
             var path = window.location.href.replace('index.do', '') + 'dashboard?';
-            if(studies.length > 0) {
+            if (studies.length > 0 && selectVcs.length > 0) {
                 path += 'study_id=' + studies.join(',') + '&';
-            }
-            if(selectVcs.length > 0) {
                 path += 'vc_id=' + selectVcs.join(',');
+            } else {
+                if(studies.length > 0) {
+                    path += 'study_id=' + studies.join(',');
+                }
+                if(selectVcs.length > 0) {
+                    path += 'vc_id=' + selectVcs.join(',');
+                }                
             }
             window.open(path);
         },
