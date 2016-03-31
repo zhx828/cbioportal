@@ -48,7 +48,9 @@
 <script src="js/src/dashboard/scripts/views/components/editableRowComponent.js"></script>
 <script src="js/src/dashboard/scripts/views/components/modalTemplate.js"></script>
 <script src="js/src/dashboard/scripts/views/components/addVCPopup.js"></script>
+<script src="js/src/dashboard/scripts/views/components/listModal.js"></script>
 <script src="js/src/dashboard/scripts/model/sessionServices.js"></script>
+<script src="js/src/dashboard/scripts/model/dataProxy.js"></script>
 
 <link rel="stylesheet" href="js/src/dashboard/styles/vendor.3d576a83.css" />
 <link rel="stylesheet" href="js/src/dashboard/styles/main.css" />
@@ -56,8 +58,8 @@
 <div class="container-fluid">
     <nav class="navbar navbar-default navbar-fixed-top">
         <div id="main-header">
-            <a href='javascript:iViz.init();' class='reset'>
-                <button type='button' class='btn btn-default'>Reset All</button>
+            <a href='javascript:iViz.init(["ov_tcga_pub", "ucec_tcga_pub", "blca_tcga_pub", "lgg_ucsf_2014"]);' class='reset'>
+            <button type='button' class='btn btn-default'>Reset All</button>
             </a>
             <button type='button' class='btn btn-default'
                     @click="addNewVC = true"
@@ -112,12 +114,13 @@
 
 <script type="text/javascript">
     $( document ).ready(function() {
-        URL = "http://localhost:8080/api/sessions/";
+        URL = "http://dashi-dev.cbio.mskcc.org:8080/session_service_iviz/api/sessions/";
         var vcId_ = location.search.split('vc_id=')[1];
         iViz.session.manage.init();
-        iViz.init();
         if (typeof vcId_ != 'undefined') {
-            iViz.session.model.getVirtualCohortDetails(vcId_)
+            iViz.session.model.getVirtualCohortDetails(vcId_);
+        } else {
+            iViz.init(["ov_tcga_pub", "ucec_tcga_pub", "blca_tcga_pub", "lgg_ucsf_2014"]);
         }
     });
 </script>
