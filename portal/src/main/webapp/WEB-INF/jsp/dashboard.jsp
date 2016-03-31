@@ -58,7 +58,7 @@
 <div class="container-fluid">
     <nav class="navbar navbar-default navbar-fixed-top">
         <div id="main-header">
-            <a href='javascript:iViz.init(["ov_tcga_pub", "ucec_tcga_pub", "blca_tcga_pub", "lgg_ucsf_2014"]);' class='reset'>
+            <a href='javascript:iViz.init();' class='reset'>
             <button type='button' class='btn btn-default'>Reset All</button>
             </a>
             <button type='button' class='btn btn-default'
@@ -114,14 +114,55 @@
 
 <script type="text/javascript">
     $( document ).ready(function() {
+        
         URL = "http://dashi-dev.cbio.mskcc.org:8080/session_service_iviz/api/sessions/";
-        var vcId_ = location.search.split('vc_id=')[1];
         iViz.session.manage.init();
-        if (typeof vcId_ != 'undefined') {
-            iViz.session.model.getVirtualCohortDetails(vcId_);
-        } else {
-            iViz.init(["ov_tcga_pub", "ucec_tcga_pub", "blca_tcga_pub", "lgg_ucsf_2014"]);
+
+        var _selectedStudyIds = []
+        
+        var _currentURL = window.location.href;
+        if (_currentURL.indexOf("vc_id") !== -1 && _currentURL.indexOf("study_id") !== -1) {
+            var _vcId;
+            var query = location.search.substr(1);
+            _.each(query.split('&'), function(_part) {
+                var item = _part.split('=');
+                if (item[0] === 'vc_id') {
+                    _vcId = item[1];
+                } else if (item[0] === 'study_id') {
+                    _selectedStudyIds = _selectedStudyIds.concat(item[1].split(','));
+                }
+            });
+            $.getJSON(URL + _vcId, function(response) {
+                _selectedStudyIds = _selectedStudyIds.concat(_.pluck(response.data.virtualCohort.selectedCases, "studyID"));
+                var _selectedPatientIds = [];
+                _.each(_.pluck(response.data.virtualCohort.selectedCases, "patients"), function(_patientIds) {
+                    _selectedPatientIds = _selectedPatientIds.concat(_patientIds);
+                });
+                var _selectedSampleIds = [];
+                _.each(_.pluck(response.data.virtualCohort.selectedCases, "samples"), function(_sampleIds) {
+                    _selectedSampleIds = _selectedSampleIds.concat(_sampleIds);
+                });
+                iViz.init(_selectedStudyIds, _selectedSampleIds, _selectedPatientIds);
+            });
+        } else if (_currentURL.indexOf("vc_id") === -1 && _currentURL.indexOf("study_id") !== -1) {
+            _selectedStudyIds = _selectedStudyIds.concat(location.search.split('study_id=')[1].split(','));
+            iViz.init(_selectedStudyIds);
+        } else if (_currentURL.indexOf("vc_id") !== -1 && _currentURL.indexOf("study_id") === -1) {
+            var _vcId = location.search.split('vc_id=')[1];
+            $.getJSON(URL + _vcId, function(response) {
+                _selectedStudyIds = _selectedStudyIds.concat(_.pluck(response.data.virtualCohort.selectedCases, "studyID"));
+                var _selectedPatientIds = [];
+                _.each(_.pluck(response.data.virtualCohort.selectedCases, "patients"), function(_patientIds) {
+                    _selectedPatientIds = _selectedPatientIds.concat(_patientIds);
+                });
+                var _selectedSampleIds = [];
+                _.each(_.pluck(response.data.virtualCohort.selectedCases, "samples"), function(_sampleIds) {
+                    _selectedSampleIds = _selectedSampleIds.concat(_sampleIds);
+                });
+                iViz.init(_selectedStudyIds, _selectedSampleIds, _selectedPatientIds);
+            });
         }
+
     });
 </script>
 

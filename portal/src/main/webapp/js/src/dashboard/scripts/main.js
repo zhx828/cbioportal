@@ -47,7 +47,7 @@ var iViz = (function(_, $) {
       $('#main-grid').append('<img src="images/ajax-loader.gif" style="padding:200px;"/>');
       
       iViz.data.init(_studyIdArr, dataInitCallbackFunc_, _inputSampleList, _inputPatientList);
-      
+        
       function dataInitCallbackFunc_(_data, _inputSampleList, _inputPatientList) {
   
         $('#main-grid').empty();
@@ -225,14 +225,24 @@ var iViz = (function(_, $) {
       return selectedPatients_;
     },
     applyVC: function (_vc) {
-      var _selectedSamples = [], _selectedPatients = [];
-      _.each(_.pluck(_vc.selectedCases, "samples"), function (_arr) {
-        _selectedSamples = _selectedSamples.concat(_arr);
-      });
-      _.each(_.pluck(_vc.selectedCases, "patients"), function (_arr) {
-        _selectedPatients = _selectedPatients.concat(_arr);
-      });
-      iViz.init(["ucec_tcga_pub", "ov_tcga_pub"], _selectedSamples, _selectedPatients);
+        var _selectedStudyIds = [], _selectedSampleIds = [], _selectedPatientIds = [];
+        _selectedStudyIds = _selectedStudyIds.concat(_.pluck(_vc.selectedCases, "studyID"));
+        _.each(_.pluck(_vc.selectedCases, "patients"), function(_patientIds) {
+            _selectedPatientIds = _selectedPatientIds.concat(_patientIds);
+        });
+        _.each(_.pluck(_vc.selectedCases, "samples"), function(_sampleIds) {
+            _selectedSampleIds = _selectedSampleIds.concat(_sampleIds);
+        });
+        iViz.init(_selectedStudyIds, _selectedSampleIds, _selectedPatientIds);
+    },
+    resetAll: function() {
+        var _vcId = location.search.split('vc_id=')[1];
+        var _studyIdStr = location.search.split('study_id=')[1];
+        if (typeof _vcId != 'undefined') {
+            iViz.session.model.getVirtualCohortDetails(_vcId);
+        } else {
+            iViz.init(_studyIdStr.split(','));
+        }
     }
     
   }
