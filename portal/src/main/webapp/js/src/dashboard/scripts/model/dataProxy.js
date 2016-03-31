@@ -45,7 +45,7 @@
   iViz.data.init = function(_studyIdArr, _callbackFunc, _inputSampleList, _inputPatientList) {
     
     var _result = {};
-    var PORTAL_INST_URL = '';
+    var PORTAL_INST_URL = window.location.protocol + "//" + window.location.host + "/" + window.location.pathname.split('/')[1]
     
     // ---- ajax cascade ----
     
