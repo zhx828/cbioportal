@@ -107,7 +107,8 @@
       },
       clickShare: function(_virtualStudy) {
         // TODO: Create Bitly URL
-        var completeURL = window.location.host + '/?vc_id=' +
+        // TODO: remove hard-coded URL
+        var completeURL = window.location.host + '/cbioportal/dashboard?vc_id=' +
           _virtualStudy.virtualCohortID;
         this.shortenedLink = completeURL;
         this.share = true;
