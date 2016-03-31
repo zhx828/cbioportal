@@ -45,7 +45,7 @@
   iViz.data.init = function(_studyIdArr, _callbackFunc, _inputSampleList, _inputPatientList) {
     
     var _result = {};
-    var PORTAL_INST_URL = 'http://localhost:8080/cbioportal';
+    var PORTAL_INST_URL = '';
     
     // ---- ajax cascade ----
     
