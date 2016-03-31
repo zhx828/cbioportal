@@ -58,7 +58,7 @@
 <div class="container-fluid">
     <nav class="navbar navbar-default navbar-fixed-top">
         <div id="main-header">
-            <a href='javascript:iViz.init();' class='reset'>
+            <a href='javascript:iViz.resetAll();' class='reset'>
             <button type='button' class='btn btn-default'>Reset All</button>
             </a>
             <button type='button' class='btn btn-default'
