@@ -107,8 +107,8 @@
         iViz.applyVC(_virtualStudy);
       },
       clickShare: function(_virtualStudy) {
-        // TODO: Create Bitly URL
-        var completeURL = window.location.href + '?vc_id=' +
+        var completeURL = window.location.host + 
+            window.location.pathname + '?vc_id=' +
           _virtualStudy.virtualCohortID;
         this.shortenedLink = completeURL;
         this.share = true;
