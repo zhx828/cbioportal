@@ -5919,6 +5919,10 @@ body {
 .modal-content button {
   margin-top: 0px !important; }
 
+.share-input-group em{
+    line-height: 20px;
+}
+
 .tooltipped {
   position: relative; }
 
