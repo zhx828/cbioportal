@@ -233,7 +233,7 @@
                         <input type="checkbox" id="histogram-show-colors" checked> Show alteration types
                     </div>
                     <div style="float:left;margin-right:20px;">
-                        <input type="checkbox" id="sortBy"> Sort Alphebetically
+                        <input type="checkbox" id="sortBy"> Sort alphabetically
                     </div>
                 </div>
 
@@ -259,7 +259,7 @@
                 
             </div>
 
-            <div id="cchistogram">
+            <div id="cchistogram" style="width: 1100px; height: 820px;position:relative;margin-top:30px;">
                 <img src="images/ajax-loader.gif"/>
             </div>
 
