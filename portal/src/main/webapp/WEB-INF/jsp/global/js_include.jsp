@@ -85,6 +85,10 @@
     };
 </script>
 
+
+<script type="text/javascript" src="js/src/dashboard/scripts/main.js?<%=GlobalProperties.getAppVersion()%>"></script>
+<script type="text/javascript" src="js/src/dashboard/scripts/vueCore.js?<%=GlobalProperties.getAppVersion()%>"></script>
+<script type="text/javascript" src="js/src/dashboard/scripts/controller/sessionUtil.js?<%=GlobalProperties.getAppVersion()%>"></script>
 <script type="text/javascript" src="js/src/Models.js?<%=GlobalProperties.getAppVersion()%>"></script>
 <script type="text/javascript" src="js/src/cgx_jquery.js?<%=GlobalProperties.getAppVersion()%>"></script>
 <script type="text/javascript" src="js/src/dynamicQuery.js?<%=GlobalProperties.getAppVersion()%>"></script>

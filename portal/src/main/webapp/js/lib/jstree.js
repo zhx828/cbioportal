@@ -2922,8 +2922,11 @@
 						hide: {delay: 0, fixed: true}
 					});
 				}
-                                
-                                var $linkOutIcon = $('<i class="btn btn-default btn-sm jstree-node-decorator" style="cursor:pointer;  padding: 0px 5px; font-weight: normal;font-style: normal;margin-left: 10px; color:white; background-color:#2986e2">Summary</i>');
+				var linkoutName = 'Summary';
+				if(node.li_attr.isVirtual){
+					linkoutName = 'Dashboard'
+				}
+                var $linkOutIcon = $('<i class="btn btn-default btn-sm jstree-node-decorator" style="cursor:pointer;  padding: 0px 5px; font-weight: normal;font-style: normal;margin-left: 10px; color:white; background-color:#2986e2">'+linkoutName+'</i>');
 				obj.append($linkOutIcon);
 				$linkOutIcon.mouseenter(function() {
 					$linkOutIcon.fadeTo('fast', 0.7);
@@ -2936,7 +2939,11 @@
 				});
 				$linkOutIcon.click(function(e) {
 					e.preventDefault();
-					window.open('study.do?cancer_study_id='+node.id);
+					if(node.li_attr.isVirtual){
+						window.open('dashboard?vc_id='+node.id);
+					}else{
+						window.open('study.do?cancer_study_id='+node.id);
+					}
 				});
 			} else {
 				if (this.node_has_descendant_branches(node.id)) {
@@ -3189,6 +3196,34 @@
 				this.trigger('changed', { 'action' : 'deselect_all', 'selected' : this._data.core.selected, 'old_selection' : tmp });
 			}
 		},
+        /**
+         * Jump to dashboard page with selected nodes
+         * @name dashboard([supress_event])
+         */
+        dashboard: function() {
+            var vcs = iViz.session.utils.getVirtualCohorts().map(function(item) {
+                return item.virtualCohortID;
+            });
+            var selected = $("#select_multiple_studies").val().split(',').map(function(i) {
+                return i.trim();
+            });
+            //var tmp = this._data.core.selected.join(',');
+            var studies = _.difference(selected, vcs);
+            var selectVcs = _.difference(selected, studies);
+            var path = window.location.href.replace('index.do', '') + 'dashboard?';
+            if (studies.length > 0 && selectVcs.length > 0) {
+                path += 'study_id=' + studies.join(',') + '&';
+                path += 'vc_id=' + selectVcs.join(',');
+            } else {
+                if(studies.length > 0) {
+                    path += 'study_id=' + studies.join(',');
+                }
+                if(selectVcs.length > 0) {
+                    path += 'vc_id=' + selectVcs.join(',');
+                }                
+            }
+            window.open(path);
+        },
 		/**
 		 * checks if a node is selected
 		 * @name is_selected(obj)
