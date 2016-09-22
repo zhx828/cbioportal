@@ -278,7 +278,7 @@ $(document).ready(function () {
     	         // TODO changed mutationProfileId to mutationProfileIds when mutations tab support multi-studies
     	         StudyViewParams.params = {
     	                    studyId: _cancerStudy.id,
-    	                    mutationProfileId: _mutationProfiles[0].id,
+    	                    mutationProfileId: _mutationProfiles.length>0?_mutationProfiles[0].id:'',
     	                    hasMutSig: hasMutation
     	                };
     	                StudyViewProxy.ivizLoad();
