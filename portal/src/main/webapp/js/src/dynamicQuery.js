@@ -56,6 +56,7 @@ var PROFILE_METHYLATION = "PROFILE_METHYLATION"
 
 var caseSetSelectionOverriddenByUser = false;
 var selectedStudiesStorageKey = "cbioportal_selected_studies";
+var virtualStudies = "";
 
 //  Create Log Function, if FireBug is not Installed.
 if(typeof(console) === "undefined" || typeof(console.log) === "undefined")
@@ -196,7 +197,7 @@ function loadMetaData() {
                 var username = $('#header_bar_table span').text();
                 vcSession.URL = window.session_service_url+'virtual_cohort/';
 
-                var virtualStudies = "";
+                
                 if(username.length>0){
                     $.when(vcSession.model.loadUserVirtualCohorts(username)).then(function(resp){
                         virtualStudies = resp;
@@ -411,12 +412,28 @@ function chooseAction(evt) {
 			return false;
 		}
        }
+       // TODO : remve the virtual studies filtering logic when the index.do query
+       // supports querying them
+       var virtualStudiesIdsList = [], selectedVirtualStudyList = [];
+       if(virtualStudies !== '' && virtualStudies.length>0){
+    	   virtualStudiesIdsList = _.pluck(virtualStudies,'virtualCohortID');
+       }
+       
     var selected_studies = $("#jstree").jstree(true).get_selected_leaves();
     if (selected_studies.length === 0 && !window.changingTabs) {
             // select all by default
             $("#jstree").jstree(true).select_node(window.jstree_root_id);
             selected_studies = $("#jstree").jstree(true).get_selected_leaves()
-    }    
+    }
+    if(virtualStudiesIdsList.length>0){
+    	selectedVirtualStudyList = _.filter(selected_studies,function(_id){
+        	return _.indexOf(virtualStudiesIdsList,_id) !== -1;
+        })
+    }
+    if(selectedVirtualStudyList.length>0) {
+        createAnError("Cannot query virtual study(s) for now", $('#select_cancer_type_section'), "");
+        return false;
+    }
     if (selected_studies.length > 1) {
 	if ( haveExpInQuery ) {
             createAnError("Expression filtering in the gene list is not supported when doing cross cancer queries.",  $('#gene_list'));
@@ -766,12 +783,14 @@ function cancerStudySelected() {
     $("#main_submit").attr("disabled",false);
 
     var cancerStudyId = $("#select_single_study").val() || "all";
-
-    if (window.metaDataJson.cancer_studies[cancerStudyId].partial==="true") {
+    
+    if(window.metaDataJson.cancer_studies[cancerStudyId]!== undefined) {
+    	if (window.metaDataJson.cancer_studies[cancerStudyId].partial==="true") {
             console.log("cancerStudySelected( loadStudyMetaData )");
-	    loadStudyMetaData(cancerStudyId);
-    } else {
-	    updateCancerStudyInformation();
+            loadStudyMetaData(cancerStudyId);
+    	} else {
+    		updateCancerStudyInformation();
+    	}
     }
 }
 
