@@ -33,6 +33,10 @@
 <%@ page import="org.mskcc.cbio.portal.util.GlobalProperties" %>
 <!-- Include Global List of Javascript Files to Load -->
 
+<!-- iViz session integration libraries START-->
+<script type="text/javascript" src="js/src/dashboard/vc-session-vendor.js?<%=GlobalProperties.getAppVersion()%>"></script>
+<script type="text/javascript" src="js/src/dashboard/vc-session.js?<%=GlobalProperties.getAppVersion()%>"></script>
+<!-- iViz session integration libraries END-->
 <script type="text/javascript" src="js/lib/jquery.min.js?<%=GlobalProperties.getAppVersion()%>"></script>
 <script type="text/javascript" src="js/lib/bootstrap.min.js?<%=GlobalProperties.getAppVersion()%>"></script>
 <script type="text/javascript" src="js/lib/bootstrap-dialog.js?<%=GlobalProperties.getAppVersion()%>"></script>
