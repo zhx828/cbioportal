@@ -194,7 +194,7 @@ function loadMetaData() {
                 // this code should be about the same as in loadStudyMetaData
                 window.metaDataJson.cancer_studies[window.cancer_study_id_selected] = json;
                 //  Add Meta Data to current page
-                var username = $('#header_bar_table span').text();
+                var username = $('#header_bar_table span').text() || '';
                 vcSession.URL = window.session_service_url+'virtual_cohort/';
 
                 
@@ -415,7 +415,7 @@ function chooseAction(evt) {
        // TODO : remve the virtual studies filtering logic when the index.do query
        // supports querying them
        var virtualStudiesIdsList = [], selectedVirtualStudyList = [];
-       if(virtualStudies !== '' && virtualStudies.length>0){
+       if(_.isArray(virtualStudies)){
     	   virtualStudiesIdsList = _.pluck(virtualStudies,'virtualCohortID');
        }
        
@@ -784,7 +784,7 @@ function cancerStudySelected() {
 
     var cancerStudyId = $("#select_single_study").val() || "all";
     
-    if(window.metaDataJson.cancer_studies[cancerStudyId]!== undefined) {
+    if(_.isObject(window.metaDataJson.cancer_studies[cancerStudyId])) {
     	if (window.metaDataJson.cancer_studies[cancerStudyId].partial==="true") {
             console.log("cancerStudySelected( loadStudyMetaData )");
             loadStudyMetaData(cancerStudyId);
@@ -976,7 +976,7 @@ function addMetaDataToPage(virtualStudies) {
 			'li_attr':{name: studyName, description: metaDataJson.cancer_studies[id].description, search_terms: 'MSKCC DMP'}});
 	});
     }
-    if(virtualStudies.length > 0){
+    if(_.isArray(virtualStudies) && virtualStudies.length > 0){
         jstree_data.push({'id':'virtual-study-group', 'parent':jstree_root_id, 'text':'Virtual Studies', 'li_attr':{name:'VIRTUAL STUDY'}});
         var studyName;
         var numSamplesInStudy;
