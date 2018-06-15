@@ -128,6 +128,11 @@ public class StudyViewFilterApplier {
             sampleIdentifiers = filterCNAGenes(cnaGenes, sampleIdentifiers);
         }
 
+        List<FusionGeneFilter> fusionGenes = studyViewFilter.getFusionGenes();
+        if (fusionGenes != null && !sampleIdentifiers.isEmpty()) {
+            sampleIdentifiers = filterFusionGenes(fusionGenes, sampleIdentifiers);
+        }
+
         Boolean withMutationData = studyViewFilter.getWithMutationData();
         if (withMutationData != null && !sampleIdentifiers.isEmpty()) {
             sampleIdentifiers = filterByProfiled(sampleIdentifiers, withMutationData, molecularProfileService::getFirstMutationProfileIds);
@@ -187,22 +192,32 @@ public class StudyViewFilterApplier {
 
     private List<SampleIdentifier> filterMutatedGenes(List<MutationGeneFilter> mutatedGenes, List<SampleIdentifier> sampleIdentifiers) {
         for (MutationGeneFilter molecularProfileGeneFilter : mutatedGenes) {
-            List<String> studyIds = new ArrayList<>();
-            List<String> sampleIds = new ArrayList<>();
-            studyViewFilterUtil.extractStudyAndSampleIds(sampleIdentifiers, studyIds, sampleIds);
-            List<Mutation> mutations = mutationService.getMutationsInMultipleMolecularProfiles(molecularProfileService
-                .getFirstMutationProfileIds(studyIds, sampleIds), sampleIds, molecularProfileGeneFilter.getEntrezGeneIds(), 
-                Projection.ID.name(), null, null, null, null);
-            
-            sampleIdentifiers = mutations.stream().map(m -> {
-                SampleIdentifier sampleIdentifier = new SampleIdentifier();
-                sampleIdentifier.setSampleId(m.getSampleId());
-                sampleIdentifier.setStudyId(m.getStudyId());
-                return sampleIdentifier;
-            }).distinct().collect(Collectors.toList());
+            sampleIdentifiers = getSamplesByEntrezGeneIds(molecularProfileGeneFilter.getEntrezGeneIds(), sampleIdentifiers, false);
         }
-
         return sampleIdentifiers;
+    }
+
+    private List<SampleIdentifier> filterFusionGenes(List<FusionGeneFilter> fusionGenes, List<SampleIdentifier> sampleIdentifiers) {
+        for (FusionGeneFilter molecularProfileGeneFilter : fusionGenes) {
+            sampleIdentifiers = getSamplesByEntrezGeneIds(molecularProfileGeneFilter.getEntrezGeneIds(), sampleIdentifiers, true);
+        }
+        return sampleIdentifiers;
+    }
+    
+    private List<SampleIdentifier> getSamplesByEntrezGeneIds(List<Integer> getEntrezGeneIds, List<SampleIdentifier> sampleIdentifiers, Boolean fusionOnly) {
+        List<String> studyIds = new ArrayList<>();
+        List<String> sampleIds = new ArrayList<>();
+        studyViewFilterUtil.extractStudyAndSampleIds(sampleIdentifiers, studyIds, sampleIds);
+        List<Mutation> mutations = mutationService.getMutationsInMultipleMolecularProfilesByMutationType(molecularProfileService
+                .getFirstMutationProfileIds(studyIds, sampleIds), sampleIds, getEntrezGeneIds, "Fusion", !fusionOnly,
+            Projection.ID.name(), null, null, null, null);
+
+        return mutations.stream().map(m -> {
+            SampleIdentifier sampleIdentifier = new SampleIdentifier();
+            sampleIdentifier.setSampleId(m.getSampleId());
+            sampleIdentifier.setStudyId(m.getStudyId());
+            return sampleIdentifier;
+        }).distinct().collect(Collectors.toList());
     }
 
     private List<SampleIdentifier> filterCNAGenes(List<CopyNumberGeneFilter> cnaGenes, List<SampleIdentifier> sampleIdentifiers) {

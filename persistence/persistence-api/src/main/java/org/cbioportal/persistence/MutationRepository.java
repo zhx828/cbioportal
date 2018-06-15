@@ -23,6 +23,11 @@ public interface MutationRepository {
                                                            Integer pageSize, Integer pageNumber,
                                                            String sortBy, String direction);
 
+    List<Mutation> getMutationsInMultipleMolecularProfilesByMutationType(List<String> molecularProfileIds, List<String> sampleIds,
+                                                                         List<Integer> entrezGeneIds, String mutationType, Boolean complementSet, String projection,
+                                                                         Integer pageSize, Integer pageNumber,
+                                                                         String sortBy, String direction);
+
     MutationMeta getMetaMutationsInMultipleMolecularProfiles(List<String> molecularProfileIds, List<String> sampleIds,
                                                              List<Integer> entrezGeneIds);
 
@@ -39,6 +44,10 @@ public interface MutationRepository {
                                                                         List<Integer> entrezGeneIds);
 
     List<MutationCountByGene> getSampleCountInMultipleMolecularProfiles(List<String> molecularProfileIds,
+                                                                        List<String> sampleIds,
+                                                                        List<Integer> entrezGeneIds);
+    
+    List<MutationCountByGene> getSampleCountInMultipleMolecularProfilesForFusions(List<String> molecularProfileIds,
                                                                         List<String> sampleIds,
                                                                         List<Integer> entrezGeneIds);
 

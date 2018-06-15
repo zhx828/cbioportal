@@ -21,6 +21,11 @@ public interface MutationMapper {
                                                            String projection, Integer limit, Integer offset,
                                                            String sortBy, String direction);
 
+    List<Mutation> getMutationsInMultipleMolecularProfilesByMutationType(List<String> molecularProfileIds, List<String> sampleIds,
+                                                                         List<Integer> entrezGeneIds, String mutationType, Boolean getComplementSet, Boolean snpOnly, 
+                                                                         String projection, Integer limit, Integer offset,
+                                                                         String sortBy, String direction);
+
     MutationMeta getMetaMutationsInMultipleMolecularProfiles(List<String> molecularProfileIds, List<String> sampleIds,
                                                              List<Integer> entrezGeneIds, Boolean snpOnly);
 
@@ -45,6 +50,13 @@ public interface MutationMapper {
                                                                          List<String> patientIds,
                                                                          List<Integer> entrezGeneIds,
                                                                          Boolean snpOnly);
+    
+    List<MutationCountByGene> getSampleCountInMultipleMolecularProfilesForFusions(List<String> molecularProfileIds,
+                                                                                           List<String> sampleIds,
+                                                                                           List<Integer> entrezGeneIds,
+                                                                                           Boolean snpOnly);
+    
+    
 
     MutationCountByPosition getMutationCountByPosition(Integer entrezGeneId, Integer proteinPosStart, 
                                                        Integer proteinPosEnd);

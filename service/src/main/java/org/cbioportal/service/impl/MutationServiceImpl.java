@@ -71,6 +71,18 @@ public class MutationServiceImpl implements MutationService {
     }
 
     @Override
+    public List<Mutation> getMutationsInMultipleMolecularProfilesByMutationType(List<String> molecularProfileIds, List<String> sampleIds, List<Integer> entrezGeneIds, String mutationType, Boolean complementSet, String projection, Integer pageSize, Integer pageNumber, String sortBy, String direction) {
+        if (complementSet == null) {
+            complementSet = false;
+        }
+        List<Mutation> mutationList = mutationRepository.getMutationsInMultipleMolecularProfilesByMutationType(molecularProfileIds,
+            sampleIds, entrezGeneIds, mutationType, complementSet, projection, pageSize, pageNumber, sortBy, direction);
+
+        mutationList.forEach(mutation -> chromosomeCalculator.setChromosome(mutation.getGene()));
+        return mutationList;
+    }
+
+    @Override
     public MutationMeta getMetaMutationsInMultipleMolecularProfiles(List<String> molecularProfileIds, 
                                                                     List<String> sampleIds, 
                                                                     List<Integer> entrezGeneIds) {
@@ -133,10 +145,27 @@ public class MutationServiceImpl implements MutationService {
                 profiledSamplesCounter.calculate(molecularProfileIds, sampleIds, result);
             }
         }
-
         return result;
 	}
 
+    @Override
+    public List<MutationCountByGene> getSampleCountInMultipleMolecularProfilesForFusions(List<String> molecularProfileIds,
+                                                                                        List<String> sampleIds,
+                                                                                        List<Integer> entrezGeneIds,
+                                                                                        boolean includeFrequency) {
+        List<MutationCountByGene> result;
+        if (molecularProfileIds.isEmpty()) {
+            result = Collections.emptyList();
+        } else {
+            result = mutationRepository.getSampleCountInMultipleMolecularProfilesForFusions(
+                molecularProfileIds, sampleIds, entrezGeneIds);
+            if (includeFrequency) {
+                profiledSamplesCounter.calculate(molecularProfileIds, sampleIds, result);
+            }
+        }
+        return result;
+    }
+    
     @Override
     public List<MutationCountByGene> getPatientCountByEntrezGeneIdsAndSampleIds(String molecularProfileId,
                                                                                 List<String> patientIds,
