@@ -77,7 +77,6 @@ public class MutationServiceImpl implements MutationService {
         List<Mutation> mutationList = mutationRepository.getMutationsInMultipleMolecularProfilesByAnnotation(molecularProfileIds,
             sampleIds, entrezGeneIds, projection, pageSize, pageNumber, sortBy, direction, filters);
 
-        mutationList.forEach(mutation -> chromosomeCalculator.setChromosome(mutation.getGene()));
         return mutationList;
     }
 
