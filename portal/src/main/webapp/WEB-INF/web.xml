@@ -23,7 +23,7 @@
     <!-- dbcp profile is defined here to prevent exceptions during war deployment -->
     <context-param>
         <param-name>spring.profiles.active</param-name>
-        <param-value>${dbconnector:dbcp},${authenticate}</param-value>
+        <param-value>${dbconnector:dbcp},${authenticate},${google.analytics.tracking:ga-api-tracking-disabled}</param-value>
     </context-param>
     <context-param>
         <param-name>spring.liveBeansView.mbeanDomain</param-name>
@@ -98,6 +98,16 @@
     <filter-mapping>
       <filter-name>CorsFilter</filter-name>
       <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>DebugHrrsFilter</filter-name>
+        <filter-class>org.mskcc.cbio.portal.util.DebugHrrsFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>DebugHrrsFilter</filter-name>
+        <url-pattern>*</url-pattern>
     </filter-mapping>
 
     <filter>
@@ -363,15 +373,6 @@
     </servlet-mapping>
 
 	<servlet>
-		<servlet-name>pfam_sequence_json</servlet-name>
-		<servlet-class>org.mskcc.cbio.portal.servlet.PfamSequenceServlet</servlet-class>
-	</servlet>
-    <servlet-mapping>
-        <servlet-name>pfam_sequence_json</servlet-name>
-        <url-pattern>/getPfamSequence.json</url-pattern>
-    </servlet-mapping>
-
-	<servlet>
 		<servlet-name>mutation_aligner_json</servlet-name>
 		<servlet-class>org.mskcc.cbio.portal.servlet.MutationAlignerServlet</servlet-class>
 	</servlet>
@@ -379,15 +380,6 @@
 		<servlet-name>mutation_aligner_json</servlet-name>
 		<url-pattern>/getMutationAligner.json</url-pattern>
 	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>mutation_3d_json</servlet-name>
-		<servlet-class>org.mskcc.cbio.portal.servlet.PdbDataServlet</servlet-class>
-	</servlet>
-    <servlet-mapping>
-        <servlet-name>mutation_3d_json</servlet-name>
-        <url-pattern>/get3dPdb.json</url-pattern>
-    </servlet-mapping>
 
 	<servlet>
 		<servlet-name>mutation_data_json</servlet-name>
