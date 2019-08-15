@@ -145,10 +145,10 @@ public class StudyViewFilterApplier {
             sampleIdentifiers = filterMutationCountVsCNASelection(mutationCountVsCNASelection, sampleIdentifiers);
         }
         
-        Boolean withOncoKBDriverMutationData = studyViewFilter.getwithOncoKBDriverMutationData();
-        if (withOncoKBDriverMutationData != null && !sampleIdentifiers.isEmpty()) {
-            sampleIdentifiers = filterByDriverMutation(sampleIdentifiers, withOncoKBDriverMutationData);
-        }
+//        Boolean withOncoKBDriverMutationData = studyViewFilter.getwithOncoKBDriverMutationData();
+//        if (withOncoKBDriverMutationData != null && !sampleIdentifiers.isEmpty()) {
+//            sampleIdentifiers = filterByDriverMutation(sampleIdentifiers, withOncoKBDriverMutationData);
+//        }
         
         // Filter the samples if the withOncoKBDriverMutationData is specified.
         // Please see withMutationData as example above
